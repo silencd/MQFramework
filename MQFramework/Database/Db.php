@@ -1,8 +1,7 @@
 <?php
-//PDO
-namespace Base\Database;
+namespace MQFramework\Database;
 
-use Base\Database\Connector;
+use MQFramework\Database\Connector;
 
 class Db
 {
@@ -121,14 +120,14 @@ class Db
         }
         if ( is_array($params) ) {
             if ( count($params) === 3 && in_array(strtolower($params[1]), $this->operators, true)) {
-                $this->wheres = $params[0].' '.$params[1].' '.$params[2];
+                $this->wheres = $params[0].' '.$params[1].' \''.$params[2].'\'';
             } else {
                 $condition = '';
                 foreach ($params as $column => $value) {
                     if ( is_array($value) ) {
                         throw new \Exception("The Express is Not Support, ".json_encode($params));
                     }
-                    $condition .= $column."='".$value."' and ";
+                    $condition .= $column." = '".$value."' and ";
                 }
                 if ( ! empty($condition) ) {
                     $this->wheres = substr($condition, 0, -4);
@@ -176,8 +175,11 @@ class Db
         $this->limit = " limit ". $limitValue;
         return $this;
     }
-    public function table($table)
+    public function table($table = '')
     {
+        if ( is_null($table) ) {
+            $table = $this->table;
+        }
         if ( $this->table_prefix === null ) {
             $this->table = $table;
         }
@@ -189,7 +191,7 @@ class Db
         $newData = [];
         foreach ( $params as $column => $param ) {
             if ( is_numeric($column) ) {
-                throw new \Exception("<br>Column Name is Integer!");
+                throw new \Exception("Column Name is Integer!");
             }
             $newData[] = $column."='".$param."'";
         }
@@ -198,8 +200,8 @@ class Db
     }
     public function build($action, $mix = '')
     {
-        if ( $this->table === null ) {
-            throw new \Exception("<br>Database Table is not set !");
+        if ( $this->table == null ) {
+            throw new \Exception("Database Table is not set !");
         }
 
         if ( $action === 'select' ) {
@@ -218,16 +220,16 @@ class Db
         }
         if ( $action === 'delete' ) {
             if ( $this->wheres === null ) {
-                throw new \Exception("<br>Can't Delete Data Without Condition !");
+                throw new \Exception("Can't Delete Data Without Condition !");
             }
             $sql = "delete from ".$this->table." where ".$this->wheres;
         }
         if ( $action === 'update' ) {
             if ( $this->wheres === null ) {
-                throw new \Exception("<br>Can't Update Data Without Condition !");
+                throw new \Exception("Can't Update Data Without Condition !");
             }
             if ( $this->column_data === null ) {
-                throw new \Exception("<br>Column Data is Null !");
+                throw new \Exception("Column Data is Null !");
             }
             $sql = 'update '.$this->table.' set '.$this->column_data.' where '.$this->wheres;
         }
@@ -240,16 +242,16 @@ class Db
     }
     public function catchSql()
     {
-         var_dump($this->sql);
+        print_r($this->sql);
         return $this;
     }
     public function prepare()
     {
-        if ( $this->sql !== null ) {
+        if (! is_null($this->sql) ) {
             try {
                 return $this->handle->prepare($this->sql);
             } catch (\Exception $e) {
-                echo " <br>Error in prepare statement({$this->sql}) : ".$e->getMessage().'<br>';
+                echo " Error in prepare statement({$this->sql}) : ".$e->getMessage();
             }
         }
     }

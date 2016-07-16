@@ -10,7 +10,7 @@ class Router
 	protected $basePath;
 	private $currentRequest;
 
-	private $controllerPrefix = 'app\Controller\\'; //控制器存放位置
+	private $controllerPrefix = 'App\Controller\\'; //控制器存放位置
 
 	private $routeConfig = '/config/routers.php'; //路由配置文件
 
