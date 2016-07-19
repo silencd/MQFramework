@@ -6,33 +6,20 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit62e2afff90df754b38b7474c965c410f
 {
-    public static $prefixLengthsPsr4 = array (
-        'V' => 
+    public static $prefixesPsr0 = array (
+        'T' => 
         array (
-            'Vendor\\Namespace\\' => 17,
-        ),
-        'M' => 
-        array (
-            'Monolog\\' => 8,
-        ),
-    );
-
-    public static $prefixDirsPsr4 = array (
-        'Vendor\\Namespace\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/',
-        ),
-        'Monolog\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/src',
+            'Twig_' => 
+            array (
+                0 => __DIR__ . '/..' . '/twig/twig/lib',
+            ),
         ),
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit62e2afff90df754b38b7474c965c410f::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit62e2afff90df754b38b7474c965c410f::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit62e2afff90df754b38b7474c965c410f::$prefixesPsr0;
 
         }, null, ClassLoader::class);
     }

@@ -6,6 +6,4 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Vendor\\Namespace\\' => array($baseDir . '/'),
-    'Monolog\\' => array($baseDir . '/src'),
 );

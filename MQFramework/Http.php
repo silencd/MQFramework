@@ -5,7 +5,7 @@ use MQFramework\Application;
 use MQFramework\Routing\Router;
 use MQFramework\Exception\HttpNotFoundException;
 
-class Http 
+class Http
 {
 	protected $router;
 	protected $app;
@@ -57,7 +57,7 @@ class Http
 		$queryController = isset($requestUri[2]) && !empty($requestUri[2]) ? $requestUri[2] : 'index';
 		//设置参数
 		$parameters = $this->parseParameter();
-		
+
 		return $this->matchRoute($queryModule, $queryController, $parameters);
 	}
 	//解析参数
@@ -73,13 +73,13 @@ class Http
 			if ($this->request['method'] == 'GET') {
 				//URL地址中带有?形式参数, 仅支持path_info模式
 				$controllerPos = strpos($this->request['uri'], $requestUri[2]) + 1 + strlen($requestUri[2]);
-	
+
 				$uri = substr($this->request['uri'], $controllerPos);
 
 				$arr = explode('/', $uri);
 
-				$p1 = $p2 = $p3 = []; 
-				
+				$p1 = $p2 = $p3 = [];
+
 				if ( isset($arr[0]) && !empty($arr[0]) ) {
 					$v1 = isset($arr[1]) && !empty($arr[1]) ? $arr[1] : '';
 					$p1 = [$arr[0] => $v1];
@@ -94,8 +94,8 @@ class Http
 				}
 				$parameters = array_merge($p1, $p2, $p3);
 			}
-		} 
-		return $parameters;	
+		}
+		return $parameters;
 	}
 	//匹配路由表 404
 	protected function matchRoute($queryModule, $queryController, $parameters) {
@@ -107,7 +107,7 @@ class Http
 				$flag++;
 			}
 		}
-	
+
 		if ($flag == 0) {
 			throw new \Exception("路由不存在404，请求地址：$queryModule/$queryController");
 		}
@@ -127,12 +127,12 @@ class Http
 		return $this->router->dispatch($request);
 	}
 	//修改方法名称 http请求类型+方法名
-	private function addHttpMethod($method) 
+	private function addHttpMethod($method)
 	{
 		return strtolower($this->request['method']).$method;
 	}
 	//回显
 	public function send() {
-		echo "<p>视图：".$this->response;
+		echo $this->response;
 	}
 }

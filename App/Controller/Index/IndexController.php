@@ -9,11 +9,15 @@ class IndexController extends Controller
 {
 	public function getLogin() {
 		$userModel = new User;
-		$ret = $userModel->getUserList();
-		
+		$data = $userModel->getUserList();
+
 		// $db = new Db;
 		// $ret = $db->table('users')->where(['name', '=', 'root'])->get();
-		return "登陆：".var_dump($ret);
+
+		$this->assign(['data' => $data]);
+		$this->assign(['name' => 'xxoo']);
+
+		return $this->display('home.index');
 	}
 	public function postLogin($param) {
 		var_dump($param);
@@ -24,6 +28,6 @@ class IndexController extends Controller
 	}
 
 	public function getIndex() {
-		return "<p>MQFramework框架：）";
+		return "<center>Welcome to MQFramework：）</center>";
 	}
 }

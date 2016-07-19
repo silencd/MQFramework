@@ -6,15 +6,11 @@
  *  		仅支持四个参数的pathinfo模式，不支持传统的 [?action=value&action=value] 形式
  *  URI：
  *  		/user/login => User/LoginController => App/Controller/User/LoginController.php
- *  		
+ *
  *  	Controller写法
  *  		[http请求操作类型+方法名] 如 getLogin()
  */
 return [
 	'index/index' => 'Index/IndexController',
 	'index/login' => 'Index/IndexController',
-	'index/mail' => 'Index/IndexController',
-	'user/login' => 'User/LoginController',
-	'user/index' => 'User/IndexController',
-	'task/index' => 'Task/TaskController'
 ];
