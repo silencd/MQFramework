@@ -12,9 +12,9 @@ abstract class Controller
 
 	public function __construct()
 	{
-		$this->make();
+		$this->resolveDependencies();
 	}
-	private function make()
+	private function resolveDependencies()
 	{
 		$app = new Application;
 		foreach ($this->dependencies as $alias => $class) {
@@ -30,6 +30,6 @@ abstract class Controller
 		return $this->instances['view']->display($tpl);
 	}
 	public function __call($method, $parameters) {
-		throw new \Exception("方法[$method]不存在");
+		throw new \Exception("控制器方法[$method]不存在");
 	}
 }
