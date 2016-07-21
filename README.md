@@ -76,9 +76,14 @@ class User extends Controller
 ---
 ### Use Twig Template Engine
 * [Twig Document](http://twig.sensiolabs.org/doc/templates.html)
-
-* template default path <code>/views/</code>
-* template file subffix is <code>.tpl.php</code>
+* template configure file in <code>config/template.php</code>
+>   'engine' => 'MQFramework\Template\TwigEngine', //default template engine
+>    'debug' => false,
+>    'path' => 'views/', //default templates storage path
+>    'cache' => false, //cache is disable in development mode
+>    'cache_path' => 'storages/views/',
+>    'tpl_suffix' => ['.tpl.php', '.php'],
+* you can use other template engine, use <code>engine =>'MQFramework\Template\BladeEngine'</code> and it must be class name implements <code>EngineContract</code> class
 
 Look this example
 * Create User login template file 
