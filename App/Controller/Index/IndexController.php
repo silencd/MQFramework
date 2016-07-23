@@ -29,7 +29,6 @@ class IndexController extends Controller
 	}
 
 	public function getIndex() {
-		$db = Config::get('config.database.mysql'); var_dump($db);
 		return "<center>Welcome to MQFramework：）</center>";
 	}
 }

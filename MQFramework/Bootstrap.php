@@ -6,6 +6,6 @@ $namespace->addPsr4('', dirname(__DIR__));
 
 $app = new MQFramework\Application;
 
-$app->singleton(MQFramework\Http::class);  //绑定至容器
+$app->singleton(MQFramework\Http\Kernel::class);  //绑定至容器
 
 return $app;

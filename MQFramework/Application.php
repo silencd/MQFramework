@@ -1,24 +1,37 @@
-<?php 
+<?php
 namespace MQFramework;
 
 class Application extends Container
 {
-	
-	public $routerMap = [];
+
 	public $basePath;
 	protected $app;
-	protected $singleton;
+	public $request = null;
 
-	public function __construct() {
-		$this->setBasePath();	
+	protected $bootstraps = [
+		'exception' => 'MQFramework\Exception\Bootstrap',
+	];
+
+	public function __construct()
+	{
+		$this->setBasePath();
 	}
-	
 
-	public function setBasePath() {
+	public function setBasePath()
+	{
 		$this->basePath = dirname(__DIR__);
 	}
 
-	public function getBasePath() {
+	public function getBasePath()
+	{
 		return $this->basePath;
+	}
+
+	public function bootstrap()
+	{
+		array_walk($this->bootstraps, function($concrete, $alias) {
+			$this->bindings[$alias] = $this->make($concrete);
+			$this->bindings[$alias]->boot();
+		});
 	}
 }

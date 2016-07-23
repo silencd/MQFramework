@@ -6,12 +6,12 @@ use MQFramework\Helper\Config;
 
 class TwigEngine implements EngineContract
 {
-    private $viewData = [];
     private $tplPath;
+    private $suffix = [];
+    private $viewData = [];
     private $tplCachePath;
     private $isDebug = false;
     private $isCache = false;
-    private $suffix = [];
     private $instance = null;
     private $engine = null;
 
@@ -79,7 +79,7 @@ class TwigEngine implements EngineContract
             return ['path' => $tplName.$this->suffix[1], 'useTplEngine' => false];
         }
 
-        throw new \Exception("Template file[$tpl] not exists !");
+        throw new \Exception("Template file [`$tpl`] not exists !");
     }
 
     public function render($data = [])

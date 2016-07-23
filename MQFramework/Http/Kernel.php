@@ -1,30 +1,31 @@
 <?php
-namespace MQFramework;
+namespace MQFramework\Http;
 
 use MQFramework\Application;
 use MQFramework\Routing\Router;
-use MQFramework\Exception\HttpNotFoundException;
+use MQFramework\Http\Exceptions\HttpException;
 
-class Http
+class Kernel
 {
 	protected $router;
 	protected $app;
 	protected $request;
 	protected $response;
 
-	public function __construct(Application $app, Router $router) {
+	public function __construct(Application $app, Router $router)
+	{
 		$this->app = $app;
 		$this->router = $router;
-		//路由配置文件
+		//oad router configure
 		$this->app->routerMap = $this->router->loadRouterConfig();
+		//load environment bootstrap
+		$this->app->bootstrap();
 	}
 
-	public function handle($request) {
-		try {
-			$this->response = $this->forwardRequestThroughRouter($request);
-		} catch (HttpException $e) {
-			echo $e->getHttpExceptionMsg();
-		}
+	public function handle($request)
+	{
+		$this->app->request = $request;
+		$this->response = $this->forwardRequestThroughRouter($request);
 		return $this;
 	}
 	//处理原始Http请求
@@ -47,7 +48,7 @@ class Http
 	//解析请求
 	protected function parseRequest($request) {
 		if (! $this->isPathInfo($request) ) {
-			throw new \Exception("Request Not Support, path_info");
+			throw new HttpException("Http请求方式不支持！");
 		}
 
 		$requestUri = explode('/', $request['uri']);
@@ -109,7 +110,7 @@ class Http
 		}
 
 		if ($flag == 0) {
-			throw new \Exception("路由不存在404，请求地址：$queryModule/$queryController");
+			throw new HttpException("请求地址不存在：[`$queryModule/$queryController`]");
 		}
 		return ['controller' => $controller, 'method' => $method, 'parameters' => $parameters];
 	}
@@ -130,6 +131,10 @@ class Http
 	private function addHttpMethod($method)
 	{
 		return strtolower($this->request['method']).$method;
+	}
+	public function setErrorInfo($message)
+	{
+		$this->response = $message;
 	}
 	//回显
 	public function send() {

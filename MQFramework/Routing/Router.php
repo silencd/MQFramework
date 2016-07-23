@@ -2,7 +2,7 @@
 namespace MQFramework\Routing;
 
 use MQFramework\Application;
-use MQFramework\Exception\RouterException;
+use MQFramework\Http\Exceptions\HttpException;
 
 class Router
 {
@@ -21,7 +21,6 @@ class Router
 		$routeConfig = $this->app->getBasePath().$this->routeConfig;
 
 		if ( ! file_exists($routeConfig) ) {
-			//throw new RouterException("Router Config not exists !");
 			throw new \Exception("路由配置文件不存在!");
 		}
 
@@ -30,16 +29,17 @@ class Router
 		return $routerMap;
 	}
 
-	public function dispatch($request) {
-
+	public function dispatch($request)
+	{
 		$this->currentRequest = $request;
 
 		$response = $this->dispatchToRoute($request);
 
-	       return $this->prepareResponse($request, $response);
+	    return $this->prepareResponse($request, $response);
 	}
 
-	public function dispatchToRoute($request) {
+	public function dispatchToRoute($request)
+	{
 		//查找路由表
 		//$route = $this->findRoute($request);
 
@@ -71,7 +71,8 @@ class Router
 		return call_user_func_array([$instance, $method], $parameters);
 	}
 	//预处理返回结果
-	public function prepareResponse($request, $response) {
+	public function prepareResponse($request, $response)
+	{
 		return $response;
 	}
 
@@ -80,8 +81,5 @@ class Router
 		$className = str_replace('/', '\\', $controller);
 		$httpMethod = $this->currentRequest;
 		return $this->controllerPrefix.$className;
-	}
-	public function __call($method, $parameters) {
-		throw new Exception("Method [$method] not Found");
 	}
 }

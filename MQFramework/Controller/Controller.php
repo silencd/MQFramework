@@ -6,7 +6,7 @@ use MQFramework\Application;
 abstract class Controller
 {
 	private $dependencies = [
-		'view' => "MQFramework\Template\View",
+		'view' => 'MQFramework\Template\View',
 	];
 	private $instances = [];
 

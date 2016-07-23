@@ -2,6 +2,7 @@
 namespace MQFramework\Database;
 
 use MQFramework\Database\Connector;
+use MQFramework\Database\Exceptions\DBException;
 
 class Db
 {
@@ -27,13 +28,15 @@ class Db
     {
         $conn = new Connector();
         try {
-            if ( isset( $conn->config['table_prefix'] ) && !empty($conn->config['table_prefix']) ) {
+            if (isset( $conn->config['table_prefix'] ) && !empty($conn->config['table_prefix'])) {
                 $this->table_prefix = $conn->config['table_prefix'];
             }
-            $this->handle = new \PDO($conn->config['dsn'], $conn->config['username'], $conn->config['password']);
+            $this->handle = new \PDO(
+                $conn->config['dsn'], $conn->config['username'], $conn->config['password']
+            );
             $this->handle->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         } catch (\PDOException $e) {
-            echo "<br>PDO Connect Error: ".$e->getMessage().'<br>';
+            throw new DBException($e->getMessage());
         }
     }
     public function getInstance()

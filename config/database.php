@@ -7,3 +7,4 @@ return [
     'DB_PASSWD' => 'root',
     'DB_TABLE_PREFIX' => '',
 ];
+
