@@ -10,7 +10,7 @@ class Model extends Db
 	public function __construct() {
 		//设置表名
 		$this->table($this->getTable());
-		parent::__construct(); 
+		parent::__construct();
 	}
 
 	protected function getTable() {
@@ -20,13 +20,13 @@ class Model extends Db
 		return $this->table;
 	}
 
-	public  function setTable($table) 
+	public  function setTable($table)
 	{
 		$this->table = $table;
 		return $this;
 	}
 
-	public function classToTable($class) 
+	public function classToTable($class)
 	{
 		$className = is_object($class) ? get_class($class) : $class;
 		if (strpos($className, '\\') > 0 ) {
@@ -36,5 +36,10 @@ class Model extends Db
 		//表名为复数
 		$tableName = strtolower($className).'s';
 		return $tableName;
+	}
+
+	public function __call($method, $args)
+	{
+        throw new \Exception("{$method}() function not exists !");
 	}
 }

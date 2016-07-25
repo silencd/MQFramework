@@ -6,12 +6,15 @@ use ErrorException;
 use Monolog\Logger as Monologger;
 use MQFramework\Application;
 use MQFramework\Helper\Config;
+use MQFramework\Exception\ErrorThrowable;
 
 class Bootstrap
 {
+    protected $app;
+
     public function boot()
     {
-        $this->app = new Application;
+        $this->app = is_null($this->app) ? new Application : $this->app;
 
         error_reporting(-1);
 
@@ -21,16 +24,16 @@ class Bootstrap
 
         register_shutdown_function([$this, 'handleShutdown']);
 
-        $app = Config::get('config.app');
-        if (! $app['debug'] ) {
+        // $app = Config::get('config.app');
+        // if ( $app['debug'] ) {
             ini_set('display_errors', 'Off');
-        }
+        // }
     }
 
     public function handleShutdown()
     {
         if (! is_null($error = error_get_last()) && $this->isFatal($error['type']) ) {
-            $this->handleException($this->fatalExceptionFromError($error, 0));
+            $this->handleException($this->fatalExceptionsFromError($error));
         }
     }
 
@@ -44,8 +47,7 @@ class Bootstrap
     public function handleException($exception)
     {
         if (! $exception instanceof Exception) {
-            echo "[not exception, Notice!!!]:".var_dump($exception);
-            //$exception = new FatalThrowableError($exception);
+            $exception = new ErrorThrowable($exception);
         }
 
         //Logger exceptions
@@ -55,16 +57,16 @@ class Bootstrap
     }
 
     //错误转化成异常
-    public function fatalExceptionFromError($error = [], $offset = null)
+    public function fatalExceptionsFromError($error = [])
     {
         return new ErrorException(
             $error['message'], 0, $error['type'], $error['file'], $error['line']
         );
     }
 
-    public function renderHttpResponse(Exception $exception)
+    public function renderHttpResponse($exception)
     {
-        $this->getExceptionHandler()->render($this->app->request, $exception)->send();
+        $this->getExceptionHandler()->render($exception)->send();
     }
 
     public function isFatal($type)
@@ -72,7 +74,7 @@ class Bootstrap
         return in_array($type, [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_PARSE]);
     }
 
-    public function getExceptionHandler()
+    protected function getExceptionHandler()
     {
         return $this->app->make('MQFramework\Exception\Handler');
     }

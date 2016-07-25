@@ -8,6 +8,6 @@ class User extends Model
 	// protected $table = ''; //ORM
 
 	public function getUserList() {
-		return $this->where(['name', '=', 'root'])->get();
+		return $this->where(['username', '=', 'root'])->get();
 	}
 }

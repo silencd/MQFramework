@@ -136,8 +136,9 @@ class Kernel
 	{
 		$this->response = $message;
 	}
-	//回显
+	//显示结果
 	public function send() {
 		echo $this->response;
+		exit;
 	}
 }

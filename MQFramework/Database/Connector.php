@@ -17,15 +17,15 @@ class Connector
         $app = new Application;
 
         $configFile =  $app->getBasePath().$this->configFile;
-        
+
         if ( file_exists($configFile) ) {
             $dbConfig = require $configFile;
         } else {
-            throw new \Exception("数据库配置文件不存在");
+            throw new \Exception("database config not exists !");
         }
 
         if ( ! is_array($dbConfig) ) {
-            throw new \Exception("加载数据库配置文件失败 !");
+            throw new \Exception("load database config occured error !");
         }
 
         return [

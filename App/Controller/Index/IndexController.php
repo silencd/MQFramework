@@ -29,6 +29,6 @@ class IndexController extends Controller
 	}
 
 	public function getIndex() {
-		return "<center>Welcome to MQFramework：）</center>";
+		return "<center><div style='margin-top:20px;'>Welcome to MQFramework：）</div></center>";
 	}
 }

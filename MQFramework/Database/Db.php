@@ -1,6 +1,7 @@
 <?php
 namespace MQFramework\Database;
 
+use Exception;
 use MQFramework\Database\Connector;
 use MQFramework\Database\Exceptions\DBException;
 
@@ -36,7 +37,7 @@ class Db
             );
             $this->handle->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         } catch (\PDOException $e) {
-            throw new DBException($e->getMessage());
+            throw new DBException($e->getMessage(), $e->getCode(), __FILE__, __LINE__);
         }
     }
     public function getInstance()
@@ -76,10 +77,10 @@ class Db
         $columns = $columnValue = [];
         foreach ( $params as $columnName => $value ) {
             if ( is_numeric($columnName) ) {
-                throw new \Exception("<br>Column Name is Integer!");
+                throw new Exception("Column Name Can't be Integer!");
             }
             $columns[] = '`'.$columnName.'`';
-            $columnValue[] = "'".$value."'";
+            $columnValue[] = " ' ".$value." ' ";
         }
         $data = [
             'column' => implode(',', $columns),
@@ -89,10 +90,10 @@ class Db
         if ( $this->execute($this->prepare()) ) {
             try {
                 return $this->handle->lastInsertId();
-            } catch (\Exception $e) {
-                echo "<br>Error in get last insert id : ".$e->getMessage();
+            } catch (Exception $e) {
+                $msg = "Can't get last insert ID [$this->sql] : ".$e->getMessage();
+                throw new DBException($msg, $e->getCode(), __FILE__, __LINE__);
             }
-            return true;
         }
     }
     public function get()
@@ -128,7 +129,7 @@ class Db
                 $condition = '';
                 foreach ($params as $column => $value) {
                     if ( is_array($value) ) {
-                        throw new \Exception("The Express is Not Support, ".json_encode($params));
+                        throw new Exception("The Express is not support : ".json_encode($params));
                     }
                     $condition .= $column." = '".$value."' and ";
                 }
@@ -138,7 +139,7 @@ class Db
             }
         }
         if ( empty($this->wheres) ) {
-            throw new \Exception("The Express is Not Support, ".json_encode($params));
+            throw new Exception("The Express is not support : ".json_encode($params));
         }
         return $this;
     }
@@ -194,7 +195,7 @@ class Db
         $newData = [];
         foreach ( $params as $column => $param ) {
             if ( is_numeric($column) ) {
-                throw new \Exception("Column Name is Integer!");
+                throw new Exception("Column Name can't be integer!");
             }
             $newData[] = $column."='".$param."'";
         }
@@ -204,7 +205,7 @@ class Db
     public function build($action, $mix = '')
     {
         if ( $this->table == null ) {
-            throw new \Exception("Database Table is not set !");
+            throw new Exception("Database Table not set !");
         }
 
         if ( $action === 'select' ) {
@@ -223,16 +224,16 @@ class Db
         }
         if ( $action === 'delete' ) {
             if ( $this->wheres === null ) {
-                throw new \Exception("Can't Delete Data Without Condition !");
+                throw new Exception("Can't Delete Data Without Condition !");
             }
             $sql = "delete from ".$this->table." where ".$this->wheres;
         }
         if ( $action === 'update' ) {
             if ( $this->wheres === null ) {
-                throw new \Exception("Can't Update Data Without Condition !");
+                throw new Exception("Can't Update Data Without Condition !");
             }
             if ( $this->column_data === null ) {
-                throw new \Exception("Column Data is Null !");
+                throw new Exception("Column Data is Null !");
             }
             $sql = 'update '.$this->table.' set '.$this->column_data.' where '.$this->wheres;
         }
@@ -253,8 +254,9 @@ class Db
         if (! is_null($this->sql) ) {
             try {
                 return $this->handle->prepare($this->sql);
-            } catch (\Exception $e) {
-                echo " Error in prepare statement({$this->sql}) : ".$e->getMessage();
+            } catch (Exception $e) {
+                $msg = " Error in prepare statement [ $this->sql ] : ".$e->getMessage();
+                throw new DBException($msg, $e->getCode(), __FILE__, __LINE__);
             }
         }
     }
@@ -263,13 +265,14 @@ class Db
         if ( is_object($executor) ) {
             try {
                 return $executor->execute();
-            } catch (\Exception $e) {
-                echo " <br>Error in execute statement( {$this->sql} ) : ".$e->getMessage().'<br>';
+            } catch (Exception $e) {
+                $msg = " Error in execute statement [ $this->sql ] : ".$e->getMessage();
+                throw new DBException($msg, $e->getCode(), __FILE__, __LINE__);
             }
         }
     }
     public function __call($func, $params)
     {
-        throw new \Exception("<br>{$func} Function not exists !");
+        throw new Exception("{$func}() function not exists !");
     }
 }
