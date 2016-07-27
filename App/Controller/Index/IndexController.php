@@ -5,6 +5,7 @@ use MQFramework\Controller\Controller;
 use App\Model\User;
 use MQFramework\Database\Db;
 use MQFramework\Helper\Config;
+use App\Exception\Handler as LogicException;
 
 class IndexController extends Controller
 {
@@ -14,6 +15,16 @@ class IndexController extends Controller
 
 		// $db = new Db;
 		// $ret = $db->table('users')->where(['name', '=', 'root'])->get();
+        // $notifySerivce = new Notify;
+        // $notifySerivce->send("xxoo123456");
+
+        // try {
+        //     throw new \Exception('WebAPINotifyTest');
+        // } catch (\Exception $e) {
+        //     $logic = new LogicException;
+        //     $logic->report($e);
+        // }
+
 
 		$this->assign(['data' => $data]);
 		$this->assign(['name' => 'xxoo']);

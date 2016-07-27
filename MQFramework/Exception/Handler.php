@@ -10,12 +10,12 @@ use MQFramework\Database\Exceptions\DBException;
 
 class Handler
 {
-    protected $log;
+    protected $log = null;
     protected $app;
 
-    public function __construct(Logger $log)
+    public function __construct()
     {
-        $this->log = $log;
+        $this->log = is_null($this->log) ? new Logger : $this->log;
     }
 
     public function report(Exception $exception)

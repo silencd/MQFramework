@@ -44,6 +44,10 @@ class Logger implements PsrLogInterface
             }
         }
     }
+    public function getMonolog()
+    {
+        return $this->logger;
+    }
     public function error($message, array $context = [])
     {
         $this->writeLog(__FUNCTION__, $message, $context);
