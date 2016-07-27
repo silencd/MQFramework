@@ -3,12 +3,14 @@ A Simple PHP Framework to Learn MVC, Just a Demo or Maybe :)
 
 Author:uShell
 
+[Chinese | 中文](https://github.com/silencd/MQFramework/blob/master/README_zh.md)
+
 ##Require
 * Twig (PHP Template Engine)
 
 ## Document
 The Framwork is so simple to use, Look some examples
-[![Chinese|中文](https://github.com/silencd/MQFramework/blob/master/README_zh.md)]
+
 ### Create user controller
 ```php
 <?php
