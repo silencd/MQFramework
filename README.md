@@ -8,7 +8,7 @@ Author:uShell
 
 ## Document
 The Framwork is so simple to use, Look some examples
-
+[![Chinese|中文](https://github.com/silencd/MQFramework/blob/master/README_zh.md)]
 ### Create user controller
 ```php
 <?php
