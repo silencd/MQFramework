@@ -40,6 +40,7 @@ class Model extends Db
 
 	public function __call($method, $args)
 	{
-        throw new \Exception("{$method}() function not exists !");
+        $class = get_called_class();
+        throw new \Exception("{$method}() function not exists in `$class` ");
 	}
 }

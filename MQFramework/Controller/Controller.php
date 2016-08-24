@@ -30,6 +30,7 @@ abstract class Controller
 		return $this->instances['view']->display($tpl);
 	}
 	public function __call($method, $parameters) {
-		throw new \Exception("控制器方法[$method]不存在");
+        $class = get_called_class();
+		throw new \Exception("method $method not exists in `$class`");
 	}
 }
