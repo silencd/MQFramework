@@ -9,7 +9,7 @@ class Application extends Container
 	public $request = null;
 
 	protected $bootstraps = [
-		'exception' => 'MQFramework\Exception\Bootstrap',
+		'exception' => 'MQFramework\Exception\Bootstrap'
 	];
 
 	public function __construct()

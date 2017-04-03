@@ -30,7 +30,7 @@ abstract class Controller
 		return $this->instances['view']->display($tpl);
 	}
 	public function __call($method, $parameters) {
-        $class = get_called_class();
+	        	$class = get_called_class();
 		throw new \Exception("method $method not exists in `$class`");
 	}
 }

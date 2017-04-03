@@ -8,7 +8,7 @@ class MemcacheService
 {
     private $host;
     private $port;
-    private $handler = null;
+    public $handler = null;
     public $pool = [];
 
     public function __construct()

@@ -7,12 +7,18 @@ use MQFramework\Database\Db;
 use MQFramework\Helper\Config;
 use App\Exception\Handler as LogicException;
 
+use App\Service\SessionService;
+
 class IndexController extends Controller
 {
 	public function getLogin() {
+                            $session = new \App\Service\SessionService;
+                            $_SESSION['name'] = 'xxxx';
+     
+                            // var_dump(error_get_last());
 		// $userModel = new User;
 		// $data = $userModel->getUserList();
-		$db = new Db;
+		// $db = new Db;
                             // $condition = ['name', '=', 'u_1232'];
   //                           $c = 'username="u_1232"';
   //                           $hash = md5($c);
@@ -44,7 +50,7 @@ class IndexController extends Controller
                             //     $logic->report($e);
                             // }
                             
-                            $memcache = new \App\Service\MemcacheService;
+                            // $memcache = new \App\Service\MemcacheService;
 
                             // $ret = $memcache->getServerStatus(); var_dump($ret);
                             // $c = microtime(true);
@@ -71,6 +77,11 @@ class IndexController extends Controller
 	}
 
 	public function getIndex() {
+                            $session = new SessionService;
+                            // $session->add('user', 'admin');
+                            // $session->get('user');
+                            // $session->delete('user');
+                            
 		return "<center><div style='margin-top:20px;'>Welcome to MQFramework：）</div></center>";
 	}
 }

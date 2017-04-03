@@ -32,14 +32,14 @@ class Container
 		if ( isset($this->instances[$abstract]) ) {
 			return $this->instances[$abstract];
 		}
-		//Closure类型
+		//Closure
 		$concrete = $this->getConcrete($abstract);
 
 		$isBuildable = $this->isBuildable($concrete, $abstract);
 
-		if ($isBuildable) { //echo 1;
+		if ($isBuildable) {
 			$object = $this->build($concrete, $parameters);
-		} else {//echo 2;
+		} else {
 			$object = $this->make($concrete, $parameters);
 		}
 
@@ -53,20 +53,20 @@ class Container
 			return $concrete($this, $parameters);
 		}
 
-		$reflector = new ReflectionClass($concrete); //var_dump(get_class_methods($reflector));die;
+		$reflector = new ReflectionClass($concrete); 
 
 		if ( ! $reflector->isInstantiable() ) {
-			throw new Exception("$concrete 不能实例化");
+			throw new Exception("$concrete can't init");
 		}
-		//解析构造方法参数
-		$constructor = $reflector->getConstructor(); //var_dump(get_class_methods($constructor));die;
+		//parse params
+		$constructor = $reflector->getConstructor();
 		if ( is_null($constructor) ) {
 			return new $concrete;
 		}
 
 		$parameters = $constructor->getParameters();
 
-		$instances = $this->getResolveClass($parameters); //var_dump($instances);die;
+		$instances = $this->getResolveClass($parameters); 
 
 		return $reflector->newInstanceArgs($instances);
 	}
@@ -75,7 +75,6 @@ class Container
 		$this->bind($abstract, $concrete);
 	}
 
-	//构造Closure
 	protected function getClosure($abstract, $concrete) {
 		return  function ($c, $parameters = []) use ($abstract, $concrete) {
 			$method = ($abstract == $concrete) ? 'build' : 'make';
